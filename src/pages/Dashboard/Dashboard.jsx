@@ -3,8 +3,7 @@ import Header from '../../components/Header/Header';
 import BillModal from '../../components/BillModal';
 import AddBillModal from '../../components/AddBillModal';
 import styles from './Dashboard.module.css'
-
-
+import DashboardStats from '../../components/DashboardStats';
 
 export default function Dashboard({ onLogout }) {
   const [bills, setBills] = useState([]);
@@ -35,7 +34,12 @@ export default function Dashboard({ onLogout }) {
     })()
   }, [])
 
-
+  useEffect(() => {
+    const savedBills = localStorage.getItem('bills');
+    if (savedBills) {
+      setBills(JSON.parse(savedBills));
+    }
+  }, []);
 
   const handleAddBill = (newBill) => {
     setBills([newBill, ...bills]);
@@ -198,32 +202,7 @@ export default function Dashboard({ onLogout }) {
                 <div className="mt-6">
                 </div>
               )}
-              <table className={styles.table}>
-                <tr>
-                  <th>Type</th>
-                  <th>Motif</th>
-                  <th>Statut</th>
-                  <th>Montant</th>
-                </tr>
-                <tr>
-                  <td>les</td>
-                  <td>les</td>
-                  <td>les</td>
-                  <td>les</td>
-                </tr>
-                <tr>
-                  <td>les</td>
-                  <td>les</td>
-                  <td>les</td>
-                  <td>les</td>
-                </tr>
-                <tr>
-                  <td>les</td>
-                  <td>les</td>
-                  <td>les</td>
-                  <td>les</td>
-                </tr>
-              </table>
+
 
             </div>
           ) : (
@@ -363,6 +342,8 @@ export default function Dashboard({ onLogout }) {
         onClose={closeAddModal}
         onSave={handleAddBill}
       />
+
+      <DashboardStats bills={bills} />
     </div>
   );
 } 
